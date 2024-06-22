@@ -12,8 +12,6 @@ const SnippetDetailsPage = async ({ params }: SnippetDetailsProps) => {
 
   const snippet = await getASnippetByIdFromDB(+id);
 
-  console.log(snippet);
-
   if (!snippet) {
     return notFound();
   }
