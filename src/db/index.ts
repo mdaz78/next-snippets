@@ -26,3 +26,16 @@ export const createSnippetInDB = (title: string, code: string) => {
 export const getAllSnippetsFromDB = () => {
   return db.snippet.findMany();
 }
+
+/**
+ * Retrieves a snippet from the database by its ID.
+ * @param id - The ID of the snippet to retrieve.
+ * @returns A promise that resolves to the retrieved snippet.
+ */
+export const getASnippetByIdFromDB = (id: number) => {
+  return db.snippet.findUnique({
+    where: {
+      id,
+    },
+  });
+}
