@@ -1,15 +1,24 @@
-"use server";
+'use server';
 
-import { createSnippetInDB, deleteSnippetInDB, updateSnippetInDB } from "@/db";
-import { redirect } from "next/navigation";
+import { createSnippetInDB, deleteSnippetInDB, updateSnippetInDB } from '@/db';
+import { redirect } from 'next/navigation';
 
-export async function createSnippet(formData: FormData) {
-	const title = formData.get("title") as string;
-	const code = formData.get("code") as string;
+export async function createSnippet(
+	formState: { message: string },
+	formData: FormData,
+) {
+	if (!formData.get('title') || !formData.get('code')) {
+		return {
+			message: 'Please fill in all fields',
+		};
+	}
+
+	const title = formData.get('title') as string;
+	const code = formData.get('code') as string;
 
 	const snippet = await createSnippetInDB(title, code);
 
-	redirect("/");
+	redirect('/');
 }
 
 export async function editSnippet(id: number, code: string) {
@@ -19,8 +28,8 @@ export async function editSnippet(id: number, code: string) {
 }
 
 export async function deleteSnippet(id: number) {
-	console.log("called id => ", id);
+	console.log('called id => ', id);
 	const snippet = await deleteSnippetInDB(id);
 
-	redirect("/");
+	redirect('/');
 }
