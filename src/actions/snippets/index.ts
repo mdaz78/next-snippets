@@ -4,17 +4,18 @@ import { createSnippetInDB, deleteSnippetInDB, updateSnippetInDB } from '@/db';
 import { redirect } from 'next/navigation';
 
 export async function createSnippet(
+	codeSnippet: string,
 	formState: { message: string },
 	formData: FormData,
 ) {
-	if (!formData.get('title') || !formData.get('code')) {
+	if (!formData.get('title') || !codeSnippet) {
 		return {
 			message: 'Please fill in all fields',
 		};
 	}
 
 	const title = formData.get('title') as string;
-	const code = formData.get('code') as string;
+	const code = codeSnippet;
 
 	const snippet = await createSnippetInDB(title, code);
 

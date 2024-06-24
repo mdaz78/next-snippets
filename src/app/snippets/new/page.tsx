@@ -1,11 +1,24 @@
 'use client';
 import { createSnippet } from '@/actions/snippets';
 import Link from 'next/link';
+import { useState } from 'react';
 import { useFormState } from 'react-dom';
 import { IoCaretBackOutline } from 'react-icons/io5';
 
+import Editor from '@monaco-editor/react';
+
 const SnippetCreatePage = () => {
-  const [formState, formAction] = useFormState(createSnippet, { message: '' });
+  const [code, setCode] = useState('');
+
+  const createSnippetAction = createSnippet.bind(null, code);
+
+  const [formState, formAction] = useFormState(createSnippetAction, {
+    message: '',
+  });
+
+  const handleEditorChange = (value = '') => {
+    setCode(value);
+  };
 
   return (
     <form className='' action={formAction}>
@@ -17,25 +30,27 @@ const SnippetCreatePage = () => {
       </div>
       <div className='flex flex-col gap-4'>
         <div className='flex gap-4'>
-          <label className='w-12' htmlFor='title'>
-            Title
-          </label>
           <input
             type='text'
             name='title'
             className='border rounded p-2 w-full'
             id='tittle'
+            placeholder='Title for the snippet'
           />
         </div>
 
         <div className='flex gap-4'>
-          <label className='w-12' htmlFor='code'>
-            Code
-          </label>
-          <textarea
-            name='code'
-            className='border rounded p-2 w-full'
-            id='code'
+          <Editor
+            height={'40vh'}
+            theme='vs-dark'
+            defaultLanguage='javascript'
+            defaultValue={code}
+            options={{
+              minimap: { enabled: false },
+              fontSize: 16,
+            }}
+            onChange={handleEditorChange}
+            value={code}
           />
         </div>
 
