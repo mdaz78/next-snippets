@@ -1,5 +1,5 @@
 import { deleteSnippet } from '@/actions/snippets';
-import { getASnippetByIdFromDB } from '@/db';
+import { getASnippetByIdFromDB, getAllSnippetsFromDB } from '@/db';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { IoCaretBackOutline } from 'react-icons/io5';
@@ -49,3 +49,11 @@ const SnippetDetailsPage = async ({ params }: SnippetDetailsProps) => {
 };
 
 export default SnippetDetailsPage;
+
+export async function generateStaticParams() {
+  const snippets = await getAllSnippetsFromDB();
+
+  return snippets.map((snippet) => ({
+    id: snippet.id.toString(),
+  }));
+}
